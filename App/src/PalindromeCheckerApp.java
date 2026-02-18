@@ -1,3 +1,20 @@
+/**
+ MAIN CLASS UseCaselPalindrome App
+ *
+ Use Case 1: Application Entry & Welcome Nessage
+ Description:
+ This class represents the entry point of the
+ Palindrome Checker Management System.
+ At this stage, the application:
+ Starts execution from the main() method
+ Displays a welcome message
+ Shows application version
+ No palindrome logic is implemented yet.
+ The goal is to establish a clear startup flow.
+ @Krish  D Shah
+  * @version 1.8
+ */
+
 public class PalindromeCheckerApp {
 
     /**
