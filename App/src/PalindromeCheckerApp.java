@@ -51,7 +51,7 @@
  * This class handles the application entry and welcome message (UC1).
  */// Define application details as constants
 private static final String APP_NAME = "PalindromeChecker App";
-private static final String APP_VERSION = "1.0.0";
+private static final String APP_VERSION = "3.0.0";
 
 /**
  * The main entry point for the application.
