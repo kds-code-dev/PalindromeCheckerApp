@@ -1,10 +1,8 @@
 /**
- MAIN CLASS UseCaselPalindrome App
- *
- Use Case 1: Application Entry & Welcome Nessage
+ MAIN CLASS UseCasePalindrome App
+ Use Case 1: Application Entry & Welcome Message
  Description:
  This class represents the entry point of the
- Palindrome Checker Management System.
  At this stage, the application:
  Starts execution from the main() method
  Displays a welcome message
@@ -44,38 +42,27 @@
 
 
 // version 2.0
-//author Krishdshah
+//author Krish d shah
 //useCase 2:
-//public class PalindromeCheckerApp {
-//    public static void main(String[] args) {
-//        System.out.println("Welcome to Palindrome Checker App Management System");
-//        System.out.println("Modify this logic to usecase 2");
-//    }
-//}
 
 /**
  * UseCase1PalindromeCheckerApp
  * A console-based Java application to check for palindromes.
  * This class handles the application entry and welcome message (UC1).
+ */// Define application details as constants
+private static final String APP_NAME = "PalindromeChecker App";
+private static final String APP_VERSION = "1.0.0";
+
+/**
+ * The main entry point for the application.
+ * This method is invoked by the JVM at startup.
+ *
  */
-public class PalindromeCheckerApp {
-
-    // Define application details as constants
-    private static final String APP_NAME = "PalindromeChecker App";
-    private static final String APP_VERSION = "1.0.0";
-
-    /**
-     * The main entry point for the application.
-     * This method is invoked by the JVM at startup.
-     *
-     * @param args Command line arguments (not used in this use case).
-     */
-    public static void main(String[] args) {
-        // Display the welcome message and application details using console output
-        System.out.println("-------------------------------------------------");
-        System.out.println("  Welcome to the " + APP_NAME);
-        System.out.println("  Version: " + APP_VERSION);
-        System.out.println("-------------------------------------------------");
-        System.out.println("\nApplication started successfully. Ready for the next use case.\n");
-    }
+void main() {
+    // Display the welcome message and application details using console output
+    IO.println("-------------------------------------------------");
+    IO.println("  Welcome to the " + APP_NAME);
+    IO.println("  Version: " + APP_VERSION);
+    IO.println("-------------------------------------------------");
+    IO.println("\nApplication started successfully. Ready for the next use case.\n");
 }
