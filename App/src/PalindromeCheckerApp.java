@@ -1,68 +1,43 @@
-/**
- MAIN CLASS UseCasePalindrome App
- Use Case 1: Application Entry & Welcome Message
- Description:
- This class represents the entry point of the
- At this stage, the application:
- Starts execution from the main() method
- Displays a welcome message
- Shows application version
- No palindrome logic is implemented yet.
- The goal is to establish a clear startup flow.
- @Krish  D Shah
-  * @version 1.8
- */
-
-//public class PalindromeCheckerApp {
-//
-//    /**
-//     * Krish D Shah RA2411026010004 V1.0
-//     */
-//    public static boolean isPalindrome(String s) {
-//        // Create a StringBuilder with the original string
-//        StringBuilder reversed = new StringBuilder(s);
-//
-//        // Reverse the StringBuilder and convert it back to a String
-//        reversed.reverse();
-//        String reversedString = reversed.toString();
-//
-//        // Compare the original string with the reversed one
-//        // Use equals() for case-sensitive comparison, or equalsIgnoreCase() for case-insensitive
-//        return s.equals(reversedString);
-//    }
-//
-//    public static void main(String[] args) {
-//        String testString1 = "madam";
-//        String testString2 = "world";
-//
-//        System.out.println(testString1 + " is a palindrome: " + isPalindrome(testString1));
-//        System.out.println(testString2 + " is a palindrome: " + isPalindrome(testString2));
-//    }
-//}
+//Krish D Shah
+//Version 4
 
 
-// version 2.0
-//author Krish d shah
-//useCase 2:
 
-/**
- * UseCase1PalindromeCheckerApp
- * A console-based Java application to check for palindromes.
- * This class handles the application entry and welcome message (UC1).
- */// Define application details as constants
-private static final String APP_NAME = "PalindromeChecker App";
-private static final String APP_VERSION = "3.0.0";
+public class PalindromeCheckerApp {
 
-/**
- * The main entry point for the application.
- * This method is invoked by the JVM at startup.
- *
- */
-void main() {
-    // Display the welcome message and application details using console output
-    IO.println("-------------------------------------------------");
-    IO.println("  Welcome to the " + APP_NAME);
-    IO.println("  Version: " + APP_VERSION);
-    IO.println("-------------------------------------------------");
-    IO.println("\nApplication started successfully. Ready for the next use case.\n");
+    public static boolean isPalindrome(String input) {
+        // Convert the string to a character array
+        char[] charArray = input.toCharArray();
+
+        // Initialize two pointers
+        int start = 0;
+        int end = charArray.length - 1;
+
+        // Use a loop to compare characters from both ends
+        while (start < end) {
+            // If characters at the current pointers do not match, it's not a palindrome
+            if (charArray[start] != charArray[end]) {
+                return false;
+            }
+            // Move the pointers towards the center
+            start++;
+            end--;
+        }
+
+        // If the loop completes without returning false, the string is a palindrome
+        return true;
+    }
+
+    public static void main(String[] args) {
+        // Test cases
+        String test1 = "madam";
+        String test2 = "racecar";
+        String test3 = "hello";
+        String test4 = "A man a plan a canal Panama"; // Note: This simplistic checker is case-sensitive and space-sensitive
+
+        System.out.println("Is \"" + test1 + "\" a palindrome? " + isPalindrome(test1));
+        System.out.println("Is \"" + test2 + "\" a palindrome? " + isPalindrome(test2));
+        System.out.println("Is \"" + test3 + "\" a palindrome? " + isPalindrome(test3));
+        System.out.println("Is \"" + test4 + "\" a palindrome? " + isPalindrome(test4));
+    }
 }
