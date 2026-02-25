@@ -1,32 +1,113 @@
-public class PalindromeChecker {
+import java.util.Stack;
+import java.util.Deque;
+import java.util.ArrayDeque;
+import java.util.Scanner;
 
-    /**
-     * Checks if a given string is a palindrome, ignoring case and non-alphanumeric characters.
-     *
-     * @param input The string to check.
-     * @return true if the string is a palindrome, false otherwise.
-     */
-    public boolean checkPalindrome(String input) {
-        if (input == null) {
-            return false;
+// PalindromeStrategy.java
+interface PalindromeStrategy {
+    boolean isPalindrome(String s);
+}
+
+// StackStrategy.java
+class StackStrategy implements PalindromeStrategy {
+    @Override
+    public boolean isPalindrome(String s) {
+        if (s == null) return false;
+        String cleanString = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        Stack<Character> stack = new Stack<>();
+
+        for (char c : cleanString.toCharArray()) {
+            stack.push(c);
         }
 
-        // Preprocess the string: convert to lowercase and remove non-alphanumeric characters.
-        // This makes the check case-insensitive and handles spaces/punctuation.
-        String cleanString = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        StringBuilder reversedString = new StringBuilder();
+        while (!stack.isEmpty()) {
+            reversedString.append(stack.pop());
+        }
 
-        // Use a two-pointer approach with the internal String data structure (char array)
-        int left = 0;
-        int right = cleanString.length() - 1;
+        return cleanString.equals(reversedString.toString());
+    }
+}
 
-        while (left < right) {
-            if (cleanString.charAt(left) != cleanString.charAt(right)) {
-                return false; // Not a palindrome
+// DequeStrategy.java
+class DequeStrategy implements PalindromeStrategy {
+    @Override
+    public boolean isPalindrome(String s) {
+        if (s == null) return false;
+        String cleanString = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char c : cleanString.toCharArray()) {
+            deque.addLast(c);
+        }
+
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
             }
-            left++;
-            right--;
         }
+        return true;
+    }
+}
 
-        return true; // Is a palindrome
+// PalindromeChecker.java
+class PalindromeChecker {
+    private PalindromeStrategy strategy;
+
+    public void setStrategy(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean check(String s) {
+        if (strategy == null) {
+            throw new IllegalStateException("Palindrome strategy not set.");
+        }
+        return strategy.isPalindrome(s);
+    }
+}
+
+// PalindromeCheckerApp.java
+public class PalindromeCheckerApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        PalindromeChecker checker = new PalindromeChecker();
+
+        while (true) {
+            System.out.println("\nSelect Palindrome Algorithm Strategy:");
+            System.out.println("1. Stack Strategy");
+            System.out.println("2. Deque Strategy");
+            System.out.println("3. Exit");
+            System.out.print("Enter choice (1-3): ");
+            String choice = scanner.nextLine();
+
+            if (choice.equals("3")) {
+                break;
+            }
+
+            switch (choice) {
+                case "1":
+                    checker.setStrategy(new StackStrategy());
+                    System.out.println("Stack Strategy selected.");
+                    break;
+                case "2":
+                    checker.setStrategy(new DequeStrategy());
+                    System.out.println("Deque Strategy selected.");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    continue;
+            }
+
+            System.out.print("Enter a string to check: ");
+            String input = scanner.nextLine();
+
+            if (checker.check(input)) {
+                System.out.println("Result: \"" + input + "\" is a palindrome.");
+            } else {
+                System.out.println("Result: \"" + input + "\" is not a palindrome.");
+            }
+        }
+        scanner.close();
+        System.out.println("Application exited.");
     }
 }
