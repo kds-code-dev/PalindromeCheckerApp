@@ -1,30 +1,22 @@
+import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
 import java.util.Scanner;
 
 public class PalindromeCheckerApp {
 
-    public static boolean isPalindromeQueueStack(String input) {
-        // Remove non-alphanumeric characters and convert to lower case
-        String cleanInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+    public static boolean isPalindromeDeque(String str) {
+        // Create a Deque and a sanitized version of the string
+        Deque<Character> deque = new LinkedList<>();
+        String sanitizedStr = str.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        if (cleanInput.isEmpty()) {
-            return true; // Empty strings or strings with only non-alphanumeric characters are palindromes
+        // Insert characters into the deque
+        for (char c : sanitizedStr.toCharArray()) {
+            deque.addLast(c);
         }
 
-        Queue<Character> queue = new LinkedList<>();
-        Stack<Character> stack = new Stack<>();
-
-        // Enqueue and push characters to both data structures
-        for (char c : cleanInput.toCharArray()) {
-            queue.enqueue(c);
-            stack.push(c);
-        }
-
-        // Compare dequeue vs pop operations
-        while (!queue.isEmpty()) {
-            if (queue.dequeue() != stack.pop()) {
+        // Compare elements from the front and rear
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
                 return false; // Not a palindrome
             }
         }
@@ -34,14 +26,15 @@ public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter a string to check if it's a palindrome: ");
-        String userInput = scanner.nextLine();
+        System.out.println("--- Deque-Based Optimized Palindrome Checker App ---");
+        System.out.print("Enter a string to check: ");
+        String input = scanner.nextLine();
         scanner.close();
 
-        if (isPalindromeQueueStack(userInput)) {
-            System.out.println("The string \"" + userInput + "\" is a palindrome using Queue and Stack.");
+        if (isPalindromeDeque(input)) {
+            System.out.println("The string \"" + input + "\" IS a palindrome.");
         } else {
-            System.out.println("The string \"" + userInput + "\" is not a palindrome using Queue and Stack.");
+            System.out.println("The string \"" + input + "\" IS NOT a palindrome.");
         }
     }
 }
