@@ -1,113 +1,90 @@
-import java.util.Stack;
-import java.util.Deque;
-import java.util.ArrayDeque;
 import java.util.Scanner;
+import java.lang.System;
 
-// PalindromeStrategy.java
-interface PalindromeStrategy {
-    boolean isPalindrome(String s);
-}
+public class PalindromeCheckerApp {
 
-// StackStrategy.java
-class StackStrategy implements PalindromeStrategy {
-    @Override
-    public boolean isPalindrome(String s) {
-        if (s == null) return false;
-        String cleanString = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        Stack<Character> stack = new Stack<>();
-
-        for (char c : cleanString.toCharArray()) {
-            stack.push(c);
-        }
-
-        StringBuilder reversedString = new StringBuilder();
-        while (!stack.isEmpty()) {
-            reversedString.append(stack.pop());
-        }
-
-        return cleanString.equals(reversedString.toString());
-    }
-}
-
-// DequeStrategy.java
-class DequeStrategy implements PalindromeStrategy {
-    @Override
-    public boolean isPalindrome(String s) {
-        if (s == null) return false;
-        String cleanString = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-        Deque<Character> deque = new ArrayDeque<>();
-
-        for (char c : cleanString.toCharArray()) {
-            deque.addLast(c);
-        }
-
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
+    // Algorithm 1: Two-Pointer Method
+    public static boolean isPalindromeTwoPointers(String s) {
+        String cleaned = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        int left = 0;
+        int right = cleaned.length() - 1;
+        while (left < right) {
+            if (cleaned.charAt(left) != cleaned.charAt(right)) {
                 return false;
             }
+            left++;
+            right--;
         }
         return true;
     }
-}
 
-// PalindromeChecker.java
-class PalindromeChecker {
-    private PalindromeStrategy strategy;
-
-    public void setStrategy(PalindromeStrategy strategy) {
-        this.strategy = strategy;
+    // Algorithm 2: StringBuilder Method
+    public static boolean isPalindromeStringBuilder(String s) {
+        String cleaned = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        String reversed = new StringBuilder(cleaned).reverse().toString();
+        return cleaned.equals(reversed);
     }
 
-    public boolean check(String s) {
-        if (strategy == null) {
-            throw new IllegalStateException("Palindrome strategy not set.");
+    // Algorithm 3: Recursive Method
+    public static boolean isPalindromeRecursive(String s) {
+        String cleaned = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        return checkPalindromeRecursive(cleaned, 0, cleaned.length() - 1);
+    }
+
+    private static boolean checkPalindromeRecursive(String s, int left, int right) {
+        if (left >= right) {
+            return true;
         }
-        return strategy.isPalindrome(s);
+        if (s.charAt(left) != s.charAt(right)) {
+            return false;
+        }
+        return checkPalindromeRecursive(s, left + 1, right - 1);
     }
-}
 
-// PalindromeCheckerApp.java
-public class PalindromeCheckerApp {
+    // Performance comparison method
+    public static void comparePerformance(String inputString) {
+        int iterations = 10000; // Run multiple times for better average and JIT optimization
+
+        System.out.println("Input String: \"" + inputString + "\"");
+        System.out.println("Running each algorithm " + iterations + " times...");
+
+        // Measure Two-Pointer Method
+        long startTime1 = System.nanoTime();
+        for (int i = 0; i < iterations; i++) {
+            isPalindromeTwoPointers(inputString);
+        }
+        long endTime1 = System.nanoTime();
+        long duration1 = (endTime1 - startTime1) / iterations;
+
+        // Measure StringBuilder Method
+        long startTime2 = System.nanoTime();
+        for (int i = 0; i < iterations; i++) {
+            isPalindromeStringBuilder(inputString);
+        }
+        long endTime2 = System.nanoTime();
+        long duration2 = (endTime2 - startTime2) / iterations;
+
+        // Measure Recursive Method
+        long startTime3 = System.nanoTime();
+        for (int i = 0; i < iterations; i++) {
+            isPalindromeRecursive(inputString);
+        }
+        long endTime3 = System.nanoTime();
+        long duration3 = (endTime3 - startTime3) / iterations;
+
+        // Display Results
+        System.out.println("\n--- Performance Results (Average NanoTime per run) ---");
+        System.out.println("1. Two-Pointer Method: " + duration1 + " ns");
+        System.out.println("2. StringBuilder Method: " + duration2 + " ns");
+        System.out.println("3. Recursive Method:    " + duration3 + " ns");
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        PalindromeChecker checker = new PalindromeChecker();
-
-        while (true) {
-            System.out.println("\nSelect Palindrome Algorithm Strategy:");
-            System.out.println("1. Stack Strategy");
-            System.out.println("2. Deque Strategy");
-            System.out.println("3. Exit");
-            System.out.print("Enter choice (1-3): ");
-            String choice = scanner.nextLine();
-
-            if (choice.equals("3")) {
-                break;
-            }
-
-            switch (choice) {
-                case "1":
-                    checker.setStrategy(new StackStrategy());
-                    System.out.println("Stack Strategy selected.");
-                    break;
-                case "2":
-                    checker.setStrategy(new DequeStrategy());
-                    System.out.println("Deque Strategy selected.");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    continue;
-            }
-
-            System.out.print("Enter a string to check: ");
-            String input = scanner.nextLine();
-
-            if (checker.check(input)) {
-                System.out.println("Result: \"" + input + "\" is a palindrome.");
-            } else {
-                System.out.println("Result: \"" + input + "\" is not a palindrome.");
-            }
-        }
+        System.out.println("Enter a string to check for palindrome and compare performance:");
+        String input = scanner.nextLine();
         scanner.close();
-        System.out.println("Application exited.");
+
+        comparePerformance(input);
     }
 }
