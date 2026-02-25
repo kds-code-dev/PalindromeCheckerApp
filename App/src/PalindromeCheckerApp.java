@@ -1,55 +1,47 @@
-import java.util.Scanner;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
-//krishdshah vscode v4
+import java.util.Scanner;
+
 public class PalindromeCheckerApp {
 
-    /**
-     * Checks if a given string is a palindrome using a Stack data structure.
-     * The method processes the string by pushing all characters onto a stack,
-     * which inherently reverses their order, and then compares the reversed
-     * string with the original.
-     *
-     * @param str The input string to check for being a palindrome.
-     * @return true if the string is a palindrome, false otherwise.
-     */
-    public static boolean isPalindromeUsingStack(String str) {
-        // Remove non-alphanumeric characters and convert to lower case for a more robust check
-        String cleanStr = str.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+    public static boolean isPalindromeQueueStack(String input) {
+        // Remove non-alphanumeric characters and convert to lower case
+        String cleanInput = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        if (cleanStr.isEmpty()) {
-            return true; // An empty or clean string is considered a palindrome
+        if (cleanInput.isEmpty()) {
+            return true; // Empty strings or strings with only non-alphanumeric characters are palindromes
         }
 
+        Queue<Character> queue = new LinkedList<>();
         Stack<Character> stack = new Stack<>();
 
-        // Push all characters of the clean string onto the stack
-        for (char c : cleanStr.toCharArray()) {
+        // Enqueue and push characters to both data structures
+        for (char c : cleanInput.toCharArray()) {
+            queue.enqueue(c);
             stack.push(c);
         }
 
-        // Pop characters from the stack to build the reversed string
-        StringBuilder reversedStrBuilder = new StringBuilder();
-        while (!stack.isEmpty()) {
-            reversedStrBuilder.append(stack.pop());
+        // Compare dequeue vs pop operations
+        while (!queue.isEmpty()) {
+            if (queue.dequeue() != stack.pop()) {
+                return false; // Not a palindrome
+            }
         }
 
-        String reversedStr = reversedStrBuilder.toString();
-
-        // Compare the reversed string with the original clean string
-        return cleanStr.equals(reversedStr);
+        return true; // Is a palindrome
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Palindrome Checker App - Use Case 5: Stack-Based Validation");
-        System.out.print("Enter a string to check: ");
-        String input = scanner.nextLine();
+        System.out.print("Enter a string to check if it's a palindrome: ");
+        String userInput = scanner.nextLine();
         scanner.close();
 
-        if (isPalindromeUsingStack(input)) {
-            System.out.println("Result: \"" + input + "\" IS a palindrome.");
+        if (isPalindromeQueueStack(userInput)) {
+            System.out.println("The string \"" + userInput + "\" is a palindrome using Queue and Stack.");
         } else {
-            System.out.println("Result: \"" + input + "\" IS NOT a palindrome.");
+            System.out.println("The string \"" + userInput + "\" is not a palindrome using Queue and Stack.");
         }
     }
 }
