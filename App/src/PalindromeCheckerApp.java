@@ -1,43 +1,55 @@
-//Krish D Shah
-//Version 4
-
-//testing git
-
+import java.util.Scanner;
+import java.util.Stack;
+//krishdshah vscode v4
 public class PalindromeCheckerApp {
 
-    public static boolean isPalindrome(String input) {
-        // Convert the string to a character array
-        char[] charArray = input.toCharArray();
+    /**
+     * Checks if a given string is a palindrome using a Stack data structure.
+     * The method processes the string by pushing all characters onto a stack,
+     * which inherently reverses their order, and then compares the reversed
+     * string with the original.
+     *
+     * @param str The input string to check for being a palindrome.
+     * @return true if the string is a palindrome, false otherwise.
+     */
+    public static boolean isPalindromeUsingStack(String str) {
+        // Remove non-alphanumeric characters and convert to lower case for a more robust check
+        String cleanStr = str.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        // Initialize two pointers
-        int start = 0;
-        int end = charArray.length - 1;
-
-        // Use a loop to compare characters from both ends
-        while (start < end) {
-            // If characters at the current pointers do not match, it's not a palindrome
-            if (charArray[start] != charArray[end]) {
-                return false;
-            }
-            // Move the pointers towards the center
-            start++;
-            end--;
+        if (cleanStr.isEmpty()) {
+            return true; // An empty or clean string is considered a palindrome
         }
 
-        // If the loop completes without returning false, the string is a palindrome
-        return true;
+        Stack<Character> stack = new Stack<>();
+
+        // Push all characters of the clean string onto the stack
+        for (char c : cleanStr.toCharArray()) {
+            stack.push(c);
+        }
+
+        // Pop characters from the stack to build the reversed string
+        StringBuilder reversedStrBuilder = new StringBuilder();
+        while (!stack.isEmpty()) {
+            reversedStrBuilder.append(stack.pop());
+        }
+
+        String reversedStr = reversedStrBuilder.toString();
+
+        // Compare the reversed string with the original clean string
+        return cleanStr.equals(reversedStr);
     }
 
     public static void main(String[] args) {
-        // Test cases
-        String test1 = "madam";
-        String test2 = "racecar";
-        String test3 = "hello";
-        String test4 = "A man a plan a canal Panama"; // Note: This simplistic checker is case-sensitive and space-sensitive
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Palindrome Checker App - Use Case 5: Stack-Based Validation");
+        System.out.print("Enter a string to check: ");
+        String input = scanner.nextLine();
+        scanner.close();
 
-        System.out.println("Is \"" + test1 + "\" a palindrome? " + isPalindrome(test1));
-        System.out.println("Is \"" + test2 + "\" a palindrome? " + isPalindrome(test2));
-        System.out.println("Is \"" + test3 + "\" a palindrome? " + isPalindrome(test3));
-        System.out.println("Is \"" + test4 + "\" a palindrome? " + isPalindrome(test4));
+        if (isPalindromeUsingStack(input)) {
+            System.out.println("Result: \"" + input + "\" IS a palindrome.");
+        } else {
+            System.out.println("Result: \"" + input + "\" IS NOT a palindrome.");
+        }
     }
 }
