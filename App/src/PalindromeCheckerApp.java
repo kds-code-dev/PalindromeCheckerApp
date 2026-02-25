@@ -1,44 +1,32 @@
-import java.util.Scanner;
-
-public class PalindromeCheckerApp {
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("--- Palindrome Checker (Case/Space Insensitive) ---");
-        System.out.print("Enter a string: ");
-        String input = scanner.nextLine();
-
-        if (isPalindrome(input)) {
-            System.out.println("\"" + input + "\" is a palindrome.");
-        } else {
-            System.out.println("\"" + input + "\" is not a palindrome.");
-        }
-
-        scanner.close();
-    }
+public class PalindromeChecker {
 
     /**
-     * UC10: Checks if a string is a palindrome ignoring case and spaces.
-     * Flow: Normalize string -> Apply logic
+     * Checks if a given string is a palindrome, ignoring case and non-alphanumeric characters.
+     *
+     * @param input The string to check.
+     * @return true if the string is a palindrome, false otherwise.
      */
-    public static boolean isPalindrome(String text) {
-        if (text == null) return false;
+    public boolean checkPalindrome(String input) {
+        if (input == null) {
+            return false;
+        }
 
-        // 1. Normalize: Convert to lowercase and remove spaces/non-alphanumeric characters
-        // \s matches spaces, [^a-zA-Z0-9] matches anything not a letter/number
-        String cleanedText = text.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        // Preprocess the string: convert to lowercase and remove non-alphanumeric characters.
+        // This makes the check case-insensitive and handles spaces/punctuation.
+        String cleanString = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
-        // 2. Palindrome Logic: Compare with reverse
+        // Use a two-pointer approach with the internal String data structure (char array)
         int left = 0;
-        int right = cleanedText.length() - 1;
+        int right = cleanString.length() - 1;
 
         while (left < right) {
-            if (cleanedText.charAt(left) != cleanedText.charAt(right)) {
-                return false;
+            if (cleanString.charAt(left) != cleanString.charAt(right)) {
+                return false; // Not a palindrome
             }
             left++;
             right--;
         }
-        return true;
+
+        return true; // Is a palindrome
     }
 }
